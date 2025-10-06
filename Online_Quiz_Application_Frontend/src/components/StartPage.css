@@ -1,0 +1,95 @@
+.start-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #6a0dad, #845ef7, #5c7cfa, #4dabf7);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+
+.start-card {
+  background: white;
+  padding: 3rem 4rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.start-title {
+  font-size: 2.2rem;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.start-subtitle {
+  color: #555;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+
+select, input {
+  padding: 12px 15px;
+  width: 100%;
+  max-width: 250px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+select:hover, input:hover {
+  border-color: #2563eb;
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+button {
+  padding: 12px 25px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #1e40af;
+  transform: translateY(-2px);
+}
+
+.btn{
+    margin: 1px;
+}
+
+@media (max-width: 480px) {
+  .start-card {
+    padding: 2rem 2rem;
+  }
+
+  select, input {
+    max-width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}
