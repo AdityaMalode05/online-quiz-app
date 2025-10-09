@@ -1,0 +1,115 @@
+/* Background - matches StartPage */
+.history-container {
+  height: 93vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #6a0dad, #845ef7, #5c7cfa, #4dabf7);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Card layout */
+.history-card {
+  background: white;
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 850px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.history-title {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+}
+
+/* Scrollable Table Container */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* allows horizontal scroll on small screens */
+  max-height: 400px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Custom scrollbar */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Table Styling */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* keeps table readable on desktop */
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.history-table th {
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.history-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.no-results {
+  color: #555;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .history-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .history-title {
+    font-size: 1.6rem;
+  }
+
+  .table-wrapper {
+    max-height: 300px;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .history-table {
+    min-width: 100%; /* allow table to shrink on mobile */
+  }
+}

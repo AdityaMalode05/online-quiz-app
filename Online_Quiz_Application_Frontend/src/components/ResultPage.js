@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ResultPage.css";
+import Header from "./Header";
 
 const ResultPage = () => {
   const { state } = useLocation();
@@ -11,6 +12,8 @@ const ResultPage = () => {
   const { score, total, questions } = state;
 
   return (
+    <>
+    <Header />
     <div className="result-container">
       <div className="result-card">
         <h1>🎯 Quiz Result</h1>
@@ -50,9 +53,10 @@ const ResultPage = () => {
           ))}
         </div>
 
-        <button onClick={() => navigate("/")}>🏁 Take Another Quiz</button>
+        <button onClick={() => navigate("/")}>Take Another Quiz</button>
       </div>
     </div>
+    </>
   );
 };
 

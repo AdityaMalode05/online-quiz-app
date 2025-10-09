@@ -7,8 +7,11 @@ export const fetchQuizQuestions = async (quizId) => {
 };
 
 export const submitQuizAnswers = async (quizId, answers) => {
-  const response = await axios.post(`${API_BASE_URL}/quizzes/${quizId}/submit`, {
-    answers: answers,
-  });
-  return response.data;
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) throw new Error("User not logged in");
+
+  const payload = { userId: user.id, answers };
+  const res = await axios.post(`http://localhost:8080/api/quizzes/${quizId}/submit`, payload);
+  return res.data;  // will now include score, total, questions with selectedOptionId
 };
+

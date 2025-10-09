@@ -74,19 +74,20 @@ const QuizPage = () => {
   };
 
   //  Submit quiz answers
-  const handleSubmit = async () => {
-    const formattedAnswers = Object.entries(answers).map(([qId, oId]) => ({
-      questionId: parseInt(qId),
-      selectedOptionId: parseInt(oId),
-    }));
+    const handleSubmit = async () => {
+  const answerArray = Object.entries(answers).map(([questionId, optionId]) => ({
+    questionId: Number(questionId),
+    selectedOptionId: optionId,
+  }));
 
-    try {
-      const result = await submitQuizAnswers(quizId, formattedAnswers);
-      navigate("/result", { state: result });
-    } catch (error) {
-      console.error("Error submitting quiz:", error);
-    }
-  };
+  try {
+    const result = await submitQuizAnswers(quizId, answerArray);
+    navigate("/result", { state: result }); // no need to wrap in {result}
+  } catch (err) {
+    alert(err.response?.data || "Error submitting quiz");
+  }
+};
+
 
   //  Display loading or missing quiz messages
   if (loading) return <h2>Loading questions...</h2>;
@@ -104,6 +105,7 @@ const QuizPage = () => {
   };
 
   return (
+  <div className="quiz-container-wrapper">
     <div className="quiz-container">
       <div className="quiz-header">
         <div className="progress-bar">
@@ -114,7 +116,7 @@ const QuizPage = () => {
             }}
           ></div>
         </div>
-        <div className={`timer ${timeLeft <= 10 ? "warning" : ""}`}>
+        <div className={`timer ${timeLeft <= 30 ? "warning" : ""}`}>
           ⏱ {formatTime(timeLeft)}
         </div>
       </div>
@@ -136,7 +138,8 @@ const QuizPage = () => {
         )}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default QuizPage;
