@@ -58,60 +58,40 @@ public class QuizService {
 
 
     public Map<String, Object> submitAnswers(Long quizId, SubmitRequestDTO submitRequest) {
-        Optional<Quiz> quizOpt = quizRepository.findById(quizId);
-        if (quizOpt.isEmpty()) {
-            return Map.of("score", 0, "total", 0, "questions", Collections.emptyList());
-        }
-
-        Quiz quiz = quizOpt.get();
-        List<Question> questions = Optional.ofNullable(quiz.getQuestions()).orElse(Collections.emptyList());
-        int total = questions.size();
-
-        // Build optionId -> Option map
-        Map<Long, Option> optionMap = new HashMap<>();
-        for (Question q : questions) {
-            if (q.getOptions() != null) {
-                for (Option o : q.getOptions()) {
-                    optionMap.put(o.getId(), o);
-                }
-            }
-        }
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow();
+        List<Question> questions = quiz.getQuestions();
 
         int score = 0;
-        Map<Long, Long> selectedAnswers = new HashMap<>();
-        if (submitRequest.getAnswers() != null) {
-            for (SubmitRequestDTO.Answer a : submitRequest.getAnswers()) {
-                selectedAnswers.put(a.getQuestionId(), a.getSelectedOptionId());
-                Option selected = optionMap.get(a.getSelectedOptionId());
-                if (selected != null && selected.isCorrect()) score++;
-            }
-        }
+        List<Map<String, Object>> questionResults = new ArrayList<>();
 
-        // Prepare detailed question result
-        List<Map<String, Object>> questionDetails = new ArrayList<>();
         for (Question q : questions) {
-            Map<String, Object> qMap = new LinkedHashMap<>();
+            Long selectedOptionId = submitRequest.getAnswers().stream()
+                    .filter(a -> a.getQuestionId().equals(q.getId()))
+                    .map(a -> a.getSelectedOptionId())
+                    .findFirst()
+                    .orElse(null);
+
+            boolean correct = q.getOptions().stream()
+                    .anyMatch(opt -> opt.getId().equals(selectedOptionId) && opt.isCorrect());
+
+            if (correct) score++;
+
+            Map<String, Object> qMap = new HashMap<>();
             qMap.put("id", q.getId());
             qMap.put("text", q.getText());
-            qMap.put("selectedOptionId", selectedAnswers.get(q.getId()));
+            qMap.put("options", q.getOptions());
+            qMap.put("selectedOptionId", selectedOptionId);
 
-            List<Map<String, Object>> optionList = new ArrayList<>();
-            for (Option o : q.getOptions()) {
-                Map<String, Object> oMap = new LinkedHashMap<>();
-                oMap.put("id", o.getId());
-                oMap.put("text", o.getText());
-                oMap.put("isCorrect", o.isCorrect());
-                optionList.add(oMap);
-            }
-            qMap.put("options", optionList);
-            questionDetails.add(qMap);
+            questionResults.add(qMap);
         }
 
-        Map<String, Object> result = new LinkedHashMap<>();
-        result.put("score", score);
-        result.put("total", total);
-        result.put("questions", questionDetails);
-        return result;
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("score", score);
+        resultMap.put("total", questions.size());
+        resultMap.put("questions", questionResults);
+
+
+        return resultMap;
     }
 
     
@@ -210,6 +190,9 @@ public class QuizService {
         questionRepository.delete(question);
     }
 
+    public Quiz getQuizById(Long quizId) {
+        return quizRepository.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz not found"));
+    }
 
 
 }
